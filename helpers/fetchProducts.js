@@ -1,5 +1,5 @@
-const fetchProducts = async (product) => {
-  const url = (`https://api.mercadolibre.com/sites/MLB/search?q=${product}`);
+const fetchProducts = async (produto) => {
+  const url = (`https://api.mercadolibre.com/sites/MLB/search?q=${produto}`);
   try {  
     const respost = await fetch(url);
     const json = await respost.json();

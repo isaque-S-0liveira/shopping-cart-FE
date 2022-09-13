@@ -40,15 +40,13 @@ const createCustomElement = (element, className, innerText) => {
 const createProductItemElement = ({ id, title, thumbnail }) => {
   const section = document.createElement('section');
   section.className = 'item';
-
-  section.appendChild(createCustomElement('span', 'item_id', id));
-  section.appendChild(createCustomElement('span', 'item__title', title));
-  section.appendChild(createProductImageElement(thumbnail));
-  section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
+   section.appendChild(createCustomElement('span', 'item_id', id));
+   section.appendChild(createCustomElement('span', 'item__title', title));
+   section.appendChild(createProductImageElement(thumbnail));
+   section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
 
   return section;
 };
-
 /**
  * Função que recupera o ID do produto passado como parâmetro.
  * @param {Element} product - Elemento do produto.
@@ -72,4 +70,15 @@ const createCartItemElement = ({ id, title, price }) => {
   return li;
 };
 
-window.onload = () => { };
+const geraItens = async () => {
+  const json = await fetchProducts('computador');
+  const items = document.querySelector('.items');
+  json.results.forEach((pr) => { 
+    items.appendChild(createProductItemElement(pr));
+  });
+  console.log(json);
+};
+geraItens();
+
+window.onload = () => {
+};
