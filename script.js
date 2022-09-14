@@ -1,6 +1,5 @@
 // Esse tipo de comentário que estão antes de todas as funções são chamados de JSdoc,
 // experimente passar o mouse sobre o nome das funções e verá que elas possuem descrições!! 
-
 // Fique a vontade para modificar o código já escrito e criar suas próprias funções!
 
 /**
@@ -66,19 +65,34 @@ const createCartItemElement = ({ id, title, price }) => {
   const li = document.createElement('li');
   li.className = 'cart__item';
   li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
-  li.addEventListener('click', cartItemClickListener);
+  // li.addEventListener('click', cartItemClickListener);
   return li;
 };
 
-const geraItens = async () => {
+const geraItens = async (event) => {
+  const olItens = document.querySelector('.cart__items');
+  const prId = event.target.parentNode.firstChild;
+  console.log(prId.innerHtml);
+  const item = await fetchItem(prId.innerText);
+  olItens.appendChild(createCartItemElement(item));
+ };
+
+const adcItens = () => {
+  const buttonAdd = document.querySelectorAll('.item__add');
+ buttonAdd.forEach((bt) => {
+   bt.addEventListener('click', geraItens);
+ }); 
+ };
+
+const geraProdutos = async () => {
   const json = await fetchProducts('computador');
   const items = document.querySelector('.items');
   json.results.forEach((pr) => { 
     items.appendChild(createProductItemElement(pr));
   });
-  console.log(json);
+  adcItens();
 };
-geraItens();
 
 window.onload = () => {
+  geraProdutos();
 };
