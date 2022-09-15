@@ -77,7 +77,7 @@ const createCartItemElement = ({ id, title, price }) => {
 const geraItens = async (event) => {
   const olItens = document.querySelector('.cart__items');
   const prId = event.target.parentNode.firstChild;
-  console.log(prId.innerHtml);
+  console.log(prId.innerText);
   const item = await fetchItem(prId.innerText);
   olItens.appendChild(createCartItemElement(item));
  };
