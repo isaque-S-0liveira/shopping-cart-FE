@@ -1,7 +1,6 @@
 // Esse tipo de comentário que estão antes de todas as funções são chamados de JSdoc,
 // experimente passar o mouse sobre o nome das funções e verá que elas possuem descrições!! 
 // Fique a vontade para modificar o código já escrito e criar suas próprias funções!
-
 /**
  * Função responsável por criar e retornar o elemento de imagem do produto.
  * @param {string} imageSource - URL da imagem.
@@ -36,6 +35,9 @@ const createCustomElement = (element, className, innerText) => {
  * @param {string} product.thumbnail - URL da imagem do produto.
  * @returns {Element} Elemento de produto.
  */
+
+const cartItens = () => document.querySelector('.cart__items');
+
 const createProductItemElement = ({ id, title, thumbnail }) => {
   const section = document.createElement('section');
   section.className = 'item';
@@ -85,7 +87,7 @@ const saveItens = () => {
 };
 
 const geraItens = async (event) => {
-  const olItens = document.querySelector('.cart__items');
+  const olItens = cartItens();
   const prId = event.target.parentNode.firstChild;
   const item = await fetchItem(prId.innerText);
   olItens.appendChild(createCartItemElement(item));
@@ -102,8 +104,7 @@ const adcItens = () => {
  const buscaItens = () => {
   const itensSalvos = localStorage.getItem('cartItems');
   const itensSalvosArr = (!itensSalvos) ? [] : JSON.parse(itensSalvos);
-  const ol = document.querySelector('.cart__items');
-
+  const ol = cartItens();
   itensSalvosArr.forEach((lis) => {
     const li = document.createElement('li');
     li.addEventListener('click', cartItemClickListener);
@@ -112,8 +113,17 @@ const adcItens = () => {
     ol.appendChild(li);
   });
   // getSavedCartItems()
-  console.log(itensSalvosArr.length);
 };
+
+const limpaCarrinho = () => {
+  const clearButton = document.querySelector('.empty-cart');
+  const ol = cartItens();
+  clearButton.className = 'empty-cart';
+  clearButton.addEventListener('click', () => {
+    localStorage.clear();
+    ol.innerHTML = '';
+  });
+  };
 
 const geraProdutos = async () => {
   const json = await fetchProducts('computador');
@@ -122,6 +132,7 @@ const geraProdutos = async () => {
     items.appendChild(createProductItemElement(pr));
   });
   adcItens();
+  limpaCarrinho();
 };
 
 window.onload = () => {
