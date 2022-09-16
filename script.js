@@ -101,7 +101,7 @@ const adcItens = () => {
 
  const buscaItens = () => {
   const itensSalvos = localStorage.getItem('cartItems');
-  const itensSalvosArr = itensSalvos.split(',');
+  const itensSalvosArr = (!itensSalvos) ? [] : JSON.parse(itensSalvos);
   const ol = document.querySelector('.cart__items');
 
   itensSalvosArr.forEach((lis) => {
