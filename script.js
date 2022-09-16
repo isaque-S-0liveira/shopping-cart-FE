@@ -74,12 +74,23 @@ const createCartItemElement = ({ id, title, price }) => {
   return li;
 };
 
+const saveItens = (event) => {
+  const lista = document.querySelectorAll('li');
+  // peguei a ideia de armazenar  os itens em um array do Leonardo Marcatti
+  const armazenador = [];
+  lista.forEach((li) => {
+    armazenador.push(li.innerHTML);
+  });
+   const armazenadorStg = JSON.stringify(armazenador);
+   saveCartItems(armazenadorStg);
+};
+
 const geraItens = async (event) => {
   const olItens = document.querySelector('.cart__items');
   const prId = event.target.parentNode.firstChild;
-  console.log(prId.innerText);
   const item = await fetchItem(prId.innerText);
   olItens.appendChild(createCartItemElement(item));
+  saveItens();
  };
 
 const adcItens = () => {
@@ -88,6 +99,22 @@ const adcItens = () => {
    bt.addEventListener('click', geraItens);
  });
  };
+
+ const buscaItens = () => {
+  const itensSalvos = localStorage.getItem('cartItems');
+  const itensSalvosArr = itensSalvos.split(',');
+  const ol = document.querySelector('.cart__items');
+
+  itensSalvosArr.forEach((lis) => {
+    const li = document.createElement('li');
+    li.addEventListener('click', cartItemClickListener);
+    li.className = 'cart__item';
+    li.innerHTML = lis;
+    ol.appendChild(li);
+  });
+  // getSavedCartItems()
+  console.log(itensSalvosArr.length);
+};
 
 const geraProdutos = async () => {
   const json = await fetchProducts('computador');
@@ -100,4 +127,5 @@ const geraProdutos = async () => {
 
 window.onload = () => {
   geraProdutos();
+  buscaItens();
 };

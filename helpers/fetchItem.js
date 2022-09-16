@@ -3,7 +3,7 @@ const fetchItem = async (ItemID) => {
   try {
     const respost = await fetch(url);
     const json = await respost.json();
-    return json.results;
+    return json;
   } catch (err) {
     return err;
   }
