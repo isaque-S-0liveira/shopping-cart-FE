@@ -63,18 +63,6 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
  * @returns {Element} Elemento de um item do carrinho.
  */
 
-const cartItemClickListener = (event) => {
-  event.target.remove();
-};
-
-const createCartItemElement = ({ id, title, price }) => {
-  const li = document.createElement('li');
-  li.className = 'cart__item';
-  li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
-   li.addEventListener('click', cartItemClickListener);
-  return li;
-};
-
 const saveItens = () => {
   const lista = document.querySelectorAll('li');
   // peguei a ideia de armazenar  os itens em um array do Leonardo Marcatti
@@ -86,12 +74,45 @@ const saveItens = () => {
    saveCartItems(armazenadorStg);
 };
 
+const sumItens = () => {
+  const li = document.querySelectorAll('li');
+  const sum = [];
+   li.forEach((lis) => {
+   const price = Number(lis.innerHTML.split('|')[2].split('$')[1]);
+   sum.push(price);
+  });
+  const resultSum = sum.reduce((acc, curr) => acc + curr);
+  return resultSum;
+ };
+
+const cartItemClickListener = (event) => {
+  const p = document.querySelector('.total-price');
+  const price = Number(event.target.innerHTML.split('|')[2].split('$')[1]);
+   p.innerHTML = sumItens() - price;
+  event.target.remove();
+};
+
+ const createCartItemElement = ({ id, title, price }) => {
+  const li = document.createElement('li');
+  li.className = 'cart__item';
+  li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
+   li.addEventListener('click', cartItemClickListener);
+  return li;
+};
+
+const adcSumHtml = () => {
+  const p = document.querySelector('.total-price');
+  p.innerHTML = sumItens();
+ };
+
 const geraItens = async (event) => {
   const olItens = cartItens();
   const prId = event.target.parentNode.firstChild;
   const item = await fetchItem(prId.innerText);
   olItens.appendChild(createCartItemElement(item));
   saveItens();
+  adcSumHtml();
+  adcSumHtml();
  };
 
 const adcItens = () => {
