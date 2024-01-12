@@ -39,7 +39,7 @@ Front-end:
  ```
   npm test
  ```
-*Para executar e acompanhar a implementação da sua cobertura de testes, rode o comando abaixo:
+* Para executar e acompanhar a implementação da sua cobertura de testes, rode o comando abaixo:
  ```
   npm run test:coverage
  ```
